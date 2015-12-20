@@ -1,0 +1,5 @@
+light_env/*
+terminal_com.txt
+scrum/scrum_env/*
+sitebuilder/sitebuilder_env/*
+*__pycache__/*
