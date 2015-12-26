@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
@@ -62,6 +64,15 @@ class SprintSerializer(serializers.ModelSerializer):
                         'task-list',
                         request=request) + '?sprint={}'.format(obj.pk),
         }
+
+    def validate_end(self, attrs, source):
+        end_date = attrs[source]
+        new = not self.object
+        changed = self.object and self.object.end != end_date
+        if (new or changed) and (end_date < date.today()):
+            msq = 'End date cannot be in the past.'
+            raise serializers.ValidationError(msq)
+        return attrs
 
 
 class TaskSerializer(serializers.ModelSerializer):
